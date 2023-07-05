@@ -22,7 +22,12 @@ public class LoggingInterceptor implements HandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     {
-        log.info("IP: " + request.getRemoteAddr() + ", URI: " + request.getMethod() + " " + request.getRequestURI());
+        StringBuilder sb = new StringBuilder("IP: ");
+        sb.append(request.getRemoteAddr());
+        sb.append(", URI: ");
+        sb.append(request.getMethod());
+        sb.append(" ");
+        sb.append(request.getRequestURI());
         return true;
     }
 }
