@@ -28,6 +28,7 @@ public class LoggingInterceptor implements HandlerInterceptor
         sb.append(request.getMethod());
         sb.append(" ");
         sb.append(request.getRequestURI());
+        log.info(sb.toString());
         return true;
     }
 }
