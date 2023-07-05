@@ -1,17 +1,30 @@
 package com.github.orionlibs.spring_http_request_logger;
 
+import java.io.IOException;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @NoArgsConstructor
 public class LoggingInterceptor implements HandlerInterceptor
 {
-    private static Logger log = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private static Logger log;
 
+    static
+    {
+        try
+        {
+            LogManager.getLogManager().readConfiguration(LoggingInterceptor.class.getResourceAsStream("/logging.properties"));
+            log = Logger.getLogger(LoggingInterceptor.class.getName());
+        }
+        catch(IOException e)
+        {
+            System.err.println("Could not setup logger configuration for the Orion Spring HTTP Request Logger Plugin: " + e.toString());
+        }
+    }
 
     public LoggingInterceptor(Logger log)
     {
