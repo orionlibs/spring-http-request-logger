@@ -1,6 +1,7 @@
-package com.github.orionlibs.spring_http_request_logger;
+package com.github.orionlibs.spring_http_request_logger.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.orionlibs.spring_http_request_logger.LoggingInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -11,21 +12,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @ComponentScan(basePackages =
                 {"com.github.orionlibs"})
-public class WebMvcConfiguration implements WebMvcConfigurer
+public class FakeSpringMVCConfiguration implements WebMvcConfigurer
 {
-    private final LoggingInterceptor loggingInterceptor;
-
-
-    @Autowired
-    public WebMvcConfiguration(LoggingInterceptor loggingInterceptor)
+    @Bean
+    public LoggingInterceptor loggingInterceptor()
     {
-        this.loggingInterceptor = loggingInterceptor;
+        return new LoggingInterceptor();
     }
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
-        registry.addInterceptor(loggingInterceptor);
     }
 }
