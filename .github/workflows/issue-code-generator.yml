@@ -1,0 +1,27 @@
+name: Generate Issue Code
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  prepend-prefix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepend Prefix
+        run: |
+          issue_number=${{github.event.issue.number}}
+          prefixed_issue_number="SHRL-${issue_number}"
+          echo "::set-output name=prefixed_issue_number::$prefixed_issue_number"
+
+      - name: Update Issue Title
+        uses: peter-evans/update-issue-comment@v3
+        with:
+          issue-number: ${{github.event.issue.number}}
+          body: |
+            New Issue Number: ${{steps.prepend-prefix.outputs.prefixed_issue_number}}
