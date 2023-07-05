@@ -1,20 +1,20 @@
 package com.github.orionlibs.spring_http_request_logger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import com.github.orionlibs.spring_http_request_logger.config.FakeTestingSpringConfiguration;
 import com.github.orionlibs.spring_http_request_logger.config.MockController;
+import java.io.IOException;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -27,25 +27,36 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ContextConfiguration(classes = FakeTestingSpringConfiguration.FakeConfiguration.class)
 @WebAppConfiguration
 @TestInstance(Lifecycle.PER_CLASS)
-public class LogginInterceptorTest
+public class LoggingInterceptorTest
 {
-    ListAppender<ILoggingEvent> listAppender;
-    LoggingInterceptor loggingInterceptor;
+    private ListLogHandler listLogHandler = new ListLogHandler();
+    private Logger logger = Logger.getLogger(LoggingInterceptor.class.getName());
     private MockMvc mockMvc;
 
 
     @BeforeEach
     void setUp()
     {
-        listAppender = new ListAppender<>();
-        listAppender.start();
-        ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger)LoggerFactory.getLogger(LoggingInterceptor.class);
-        logger.addAppender(listAppender);
-        this.loggingInterceptor = new LoggingInterceptor(logger);
-        mockMvc = MockMvcBuilders
-                        .standaloneSetup(new MockController())
-                        .addInterceptors(loggingInterceptor)
-                        .build();
+        try
+        {
+            LogManager.getLogManager().readConfiguration(LoggingInterceptorTest.class.getResourceAsStream("/logging.properties"));
+            logger.addHandler(listLogHandler);
+            mockMvc = MockMvcBuilders
+                            .standaloneSetup(new MockController())
+                            .addInterceptors(new LoggingInterceptor(logger))
+                            .build();
+        }
+        catch(IOException e)
+        {
+            System.err.println("Could not setup logger configuration for the Orion Spring HTTP Request Logger Plugin: " + e.toString());
+        }
+    }
+
+
+    @AfterEach
+    public void teardown()
+    {
+        logger.removeHandler(listLogHandler);
     }
 
 
@@ -53,8 +64,8 @@ public class LogginInterceptorTest
     void preHandle() throws Exception
     {
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        assertEquals(1, listAppender.list.size());
-        assertEquals("IP: 127.0.0.1, URI: GET /", listAppender.list.get(0).getFormattedMessage());
-        assertEquals(Level.INFO, listAppender.list.get(0).getLevel());
+        boolean messageLogged = listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /"));
+        assertTrue(messageLogged);
     }
 }
