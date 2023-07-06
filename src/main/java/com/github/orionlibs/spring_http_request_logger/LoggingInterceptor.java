@@ -1,5 +1,7 @@
 package com.github.orionlibs.spring_http_request_logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +33,13 @@ public class LoggingInterceptor implements HandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     {
-        StringBuilder sb = new StringBuilder("IP: ");
-        sb.append(request.getRemoteAddr());
-        sb.append(", URI: ");
+        List<String> logElements = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        if(ConfigurationService.getBooleanProp("log.ip.address.enabled"))
+        {
+            logElements.add("IP: " + request.getRemoteAddr());
+        }
+        sb.append(logElements.get(0) + ", URI: ");
         sb.append(request.getMethod());
         sb.append(" ");
         sb.append(request.getRequestURI());
