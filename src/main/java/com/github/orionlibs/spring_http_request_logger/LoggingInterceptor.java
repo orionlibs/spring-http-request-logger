@@ -1,36 +1,22 @@
 package com.github.orionlibs.spring_http_request_logger;
 
-import java.io.IOException;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 @NoArgsConstructor
 public class LoggingInterceptor implements HandlerInterceptor
 {
-    private static Logger log;
+    public static Logger log;
 
     static
     {
-        try
-        {
-            LogManager.getLogManager().readConfiguration(LoggingInterceptor.class.getResourceAsStream("/orion-spring-http-request-logger.properties"));
-            log = Logger.getLogger(LoggingInterceptor.class.getName());
-        }
-        catch(IOException e)
-        {
-            System.err.println("Could not setup logger configuration for the Orion Spring HTTP Request Logger Plugin: " + e.toString());
-        }
+        log = Logger.getLogger(LoggingInterceptor.class.getName());
     }
-
-    public LoggingInterceptor(Logger log)
-    {
-        this.log = log;
-    }
-
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -43,5 +29,19 @@ public class LoggingInterceptor implements HandlerInterceptor
         sb.append(request.getRequestURI());
         log.info(sb.toString());
         return true;
+    }
+
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+                    @Nullable ModelAndView modelAndView) throws Exception
+    {
+    }
+
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                    @Nullable Exception ex) throws Exception
+    {
     }
 }
