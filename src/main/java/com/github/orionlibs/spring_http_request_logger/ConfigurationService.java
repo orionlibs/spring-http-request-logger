@@ -21,4 +21,10 @@ public class ConfigurationService
     {
         return Boolean.parseBoolean(configurationRegistry.getProperty(key));
     }
+
+
+    public static void updateProp(String key, String value)
+    {
+        configurationRegistry.updateProp(key, value);
+    }
 }
