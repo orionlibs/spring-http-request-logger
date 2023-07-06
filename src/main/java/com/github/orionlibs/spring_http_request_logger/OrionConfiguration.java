@@ -52,4 +52,10 @@ class OrionConfiguration extends Properties
         store(output, null);
         return new ByteArrayInputStream(output.toByteArray());
     }
+
+
+    public void updateProp(String key, String value)
+    {
+        put(key, value);
+    }
 }

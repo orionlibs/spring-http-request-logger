@@ -39,11 +39,19 @@ public class LoggingInterceptor implements HandlerInterceptor
         {
             logElements.add("IP: " + request.getRemoteAddr());
         }
-        sb.append(logElements.get(0) + ", URI: ");
-        sb.append(request.getMethod());
-        sb.append(" ");
-        sb.append(request.getRequestURI());
-        log.info(sb.toString());
+        if(ConfigurationService.getBooleanProp("log.http.method.enabled") && ConfigurationService.getBooleanProp("log.uri.enabled"))
+        {
+            logElements.add("URI: " + request.getMethod() + " " + request.getRequestURI());
+        }
+        else if(!ConfigurationService.getBooleanProp("log.http.method.enabled") && ConfigurationService.getBooleanProp("log.uri.enabled"))
+        {
+            logElements.add("URI: " + request.getRequestURI());
+        }
+        else if(ConfigurationService.getBooleanProp("log.http.method.enabled") && !ConfigurationService.getBooleanProp("log.uri.enabled"))
+        {
+            logElements.add("URI: " + request.getMethod());
+        }
+        log.info(String.join(", ", logElements.toArray(new String[0])));
         return true;
     }
 
