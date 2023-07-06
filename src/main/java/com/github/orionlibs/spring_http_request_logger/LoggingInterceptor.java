@@ -8,6 +8,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Spring MVC interceptor whose job is to log HTTP requests
+ */
 @NoArgsConstructor
 public class LoggingInterceptor implements HandlerInterceptor
 {
@@ -18,6 +21,13 @@ public class LoggingInterceptor implements HandlerInterceptor
         log = Logger.getLogger(LoggingInterceptor.class.getName());
     }
 
+    /**
+     * It logs this HTTP request's data before it is handled.
+     * @param request HTTP request
+     * @param response HTTP response
+     * @param handler
+     * @return
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     {
@@ -32,6 +42,14 @@ public class LoggingInterceptor implements HandlerInterceptor
     }
 
 
+    /**
+     * It logs this HTTP request's data after it is handled and before the response is built.
+     * @param request HTTP request
+     * @param response HTTP response
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
+     */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                     @Nullable ModelAndView modelAndView) throws Exception
@@ -39,6 +57,14 @@ public class LoggingInterceptor implements HandlerInterceptor
     }
 
 
+    /**
+     * It logs this HTTP request's data after it is handled and after the response is built.
+     * @param request HTTP request
+     * @param response HTTP response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
                     @Nullable Exception ex) throws Exception

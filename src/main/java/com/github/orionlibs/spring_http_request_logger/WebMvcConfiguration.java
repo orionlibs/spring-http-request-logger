@@ -10,22 +10,32 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Spring MVC configurator. It loads the logger and the features configuration and
+ * registers the {@link LoggingInterceptor} with the Spring MVC registry.
+ */
 @Configuration
 @EnableWebMvc
 public class WebMvcConfiguration implements WebMvcConfigurer
 {
+    /**
+     * The location of the configuration file that has the logging configuration only e.g. log levels.
+     */
     public static final String LOGGER_CONFIGURATION_FILE = "/com/github/orionlibs/spring_http_request_logger/configuration/orion-spring-http-request-logger.prop";
+    /**
+     * The location of the configuration file that has configuration for the features of this plugin.
+     */
     public static final String FEATURE_CONFIGURATION_FILE = "/com/github/orionlibs/spring_http_request_logger/configuration/feature-configuration.prop";
-    private final Environment env;
+    private final Environment springEnv;
     private final LoggingInterceptor loggingInterceptor;
     private final OrionConfiguration loggerConfiguration;
     private final OrionConfiguration featureConfiguration;
 
 
     @Autowired
-    public WebMvcConfiguration(final Environment env, LoggingInterceptor loggingInterceptor) throws IOException
+    public WebMvcConfiguration(final Environment springEnv, LoggingInterceptor loggingInterceptor) throws IOException
     {
-        this.env = env;
+        this.springEnv = springEnv;
         this.loggingInterceptor = loggingInterceptor;
         this.loggerConfiguration = new OrionConfiguration();
         this.featureConfiguration = new OrionConfiguration();
@@ -41,7 +51,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer
         InputStream defaultConfigStream = LoggingInterceptor.class.getResourceAsStream(LOGGER_CONFIGURATION_FILE);
         try
         {
-            loggerConfiguration.loadDefaultAndCustomConfiguration(defaultConfigStream, env);
+            loggerConfiguration.loadDefaultAndCustomConfiguration(defaultConfigStream, springEnv);
             LogManager.getLogManager().readConfiguration(loggerConfiguration.getAsInputStream());
         }
         catch(IOException e)
@@ -56,7 +66,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer
         InputStream defaultConfigStream = LoggingInterceptor.class.getResourceAsStream(FEATURE_CONFIGURATION_FILE);
         try
         {
-            featureConfiguration.loadDefaultAndCustomConfiguration(defaultConfigStream, env);
+            featureConfiguration.loadDefaultAndCustomConfiguration(defaultConfigStream, springEnv);
         }
         catch(IOException e)
         {
