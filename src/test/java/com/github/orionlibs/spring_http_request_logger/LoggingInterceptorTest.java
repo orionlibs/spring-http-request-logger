@@ -1,5 +1,6 @@
 package com.github.orionlibs.spring_http_request_logger;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,11 +61,24 @@ public class LoggingInterceptorTest
 
 
     @Test
-    void test_preHandle() throws Exception
+    void test_preHandle_interceptorEnabled() throws Exception
     {
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /"));
         assertTrue(messageLogged);
+    }
+
+
+    @Test
+    void test_preHandle_interceptorDisabled() throws Exception
+    {
+        mockMvc = MockMvcBuilders
+                        .standaloneSetup(new MockController())
+                        .build();
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        boolean messageLogged = listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /"));
+        assertFalse(messageLogged);
     }
 }
