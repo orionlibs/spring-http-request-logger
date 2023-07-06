@@ -1,4 +1,4 @@
-package com.github.orionlibs.spring_http_request_logger;
+package com.github.orionlibs.spring_http_request_logger.config;
 
 import java.util.ArrayList;
 import java.util.List;
