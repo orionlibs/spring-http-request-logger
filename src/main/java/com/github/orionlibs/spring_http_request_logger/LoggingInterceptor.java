@@ -1,6 +1,7 @@
 package com.github.orionlibs.spring_http_request_logger;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -37,22 +38,31 @@ public class LoggingInterceptor implements HandlerInterceptor
         StringBuilder sb = new StringBuilder();
         if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.ip.address.enabled"))
         {
-            logElements.add("IP: " + request.getRemoteAddr());
+            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
+            String result = String.format(pattern, "IP", request.getRemoteAddr());
+            logElements.add(result);
         }
         if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
                         && ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
-            logElements.add("URI: " + request.getMethod() + " " + request.getRequestURI());
+            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
+            String result = String.format(pattern, "URI", request.getMethod() + " " + request.getRequestURI());
+            logElements.add(result);
         }
         else if(!ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
                         && ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
-            logElements.add("URI: " + request.getRequestURI());
+            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
+            String result = String.format(pattern, "URI", request.getRequestURI());
+            logElements.add(result);
         }
         else if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
                         && !ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
-            logElements.add("URI: " + request.getMethod());
+            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
+            String result = String.format(pattern, "URI", request.getMethod());
+            logElements.add(result);
+            Formatter temp;
         }
         log.info(String.join(", ", logElements.toArray(new String[0])));
         return true;
