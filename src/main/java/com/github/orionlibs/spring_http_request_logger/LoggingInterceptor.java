@@ -1,6 +1,7 @@
 package com.github.orionlibs.spring_http_request_logger;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -61,9 +62,9 @@ public class LoggingInterceptor implements HandlerInterceptor
             String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
             String result = String.format(pattern, "URI", request.getMethod());
             logElements.add(result);
+            Formatter temp;
         }
-        String separator = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.record.element.separator");
-        log.info(String.join(separator, logElements.toArray(new String[0])));
+        log.info(String.join(", ", logElements.toArray(new String[0])));
         return true;
     }
 
