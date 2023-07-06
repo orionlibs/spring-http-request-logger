@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.github.orionlibs.spring_http_request_logger.config.FakeTestingSpringConfiguration;
+import com.github.orionlibs.spring_http_request_logger.config.ListLogHandler;
 import com.github.orionlibs.spring_http_request_logger.config.MockController;
 import java.io.IOException;
 import java.util.logging.LogManager;
