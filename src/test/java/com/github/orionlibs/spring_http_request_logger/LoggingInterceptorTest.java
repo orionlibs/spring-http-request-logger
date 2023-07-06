@@ -87,63 +87,63 @@ public class LoggingInterceptorTest
     @Test
     void test_preHandle_IPAddressLoggingDisabled() throws Exception
     {
-        ConfigurationService.updateProp("log.ip.address.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("URI: GET /"));
         assertTrue(messageLogged);
-        ConfigurationService.updateProp("log.ip.address.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "true");
     }
 
 
     @Test
     void test_preHandle_HTTPMethodLoggingDisabled() throws Exception
     {
-        ConfigurationService.updateProp("log.http.method.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: /"));
         assertTrue(messageLogged);
-        ConfigurationService.updateProp("log.http.method.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "true");
     }
 
 
     @Test
     void test_preHandle_URILoggingDisabled() throws Exception
     {
-        ConfigurationService.updateProp("log.uri.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET"));
         assertTrue(messageLogged);
-        ConfigurationService.updateProp("log.uri.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "true");
     }
 
 
     @Test
     void test_preHandle_IPAddressAndURILoggingDisabled() throws Exception
     {
-        ConfigurationService.updateProp("log.ip.address.enabled", "false");
-        ConfigurationService.updateProp("log.uri.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("URI: GET"));
         assertTrue(messageLogged);
-        ConfigurationService.updateProp("log.ip.address.enabled", "true");
-        ConfigurationService.updateProp("log.uri.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "true");
     }
 
 
     @Test
     void test_preHandle_IPAddressAndHTTPMethodLoggingDisabled() throws Exception
     {
-        ConfigurationService.updateProp("log.ip.address.enabled", "false");
-        ConfigurationService.updateProp("log.http.method.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "false");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("URI: /"));
         assertTrue(messageLogged);
-        ConfigurationService.updateProp("log.ip.address.enabled", "true");
-        ConfigurationService.updateProp("log.http.method.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "true");
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "true");
     }
 }

@@ -35,19 +35,22 @@ public class LoggingInterceptor implements HandlerInterceptor
     {
         List<String> logElements = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-        if(ConfigurationService.getBooleanProp("log.ip.address.enabled"))
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.ip.address.enabled"))
         {
             logElements.add("IP: " + request.getRemoteAddr());
         }
-        if(ConfigurationService.getBooleanProp("log.http.method.enabled") && ConfigurationService.getBooleanProp("log.uri.enabled"))
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
+                        && ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
             logElements.add("URI: " + request.getMethod() + " " + request.getRequestURI());
         }
-        else if(!ConfigurationService.getBooleanProp("log.http.method.enabled") && ConfigurationService.getBooleanProp("log.uri.enabled"))
+        else if(!ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
+                        && ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
             logElements.add("URI: " + request.getRequestURI());
         }
-        else if(ConfigurationService.getBooleanProp("log.http.method.enabled") && !ConfigurationService.getBooleanProp("log.uri.enabled"))
+        else if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
+                        && !ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
             logElements.add("URI: " + request.getMethod());
         }
