@@ -39,7 +39,7 @@ public class LoggingInterceptorTest
     {
         try
         {
-            LogManager.getLogManager().readConfiguration(LoggingInterceptorTest.class.getResourceAsStream("/logging.properties"));
+            LogManager.getLogManager().readConfiguration(LoggingInterceptorTest.class.getResourceAsStream("/orion-spring-http-request-logger.properties"));
             logger.addHandler(listLogHandler);
             mockMvc = MockMvcBuilders
                             .standaloneSetup(new MockController())

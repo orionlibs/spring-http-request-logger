@@ -17,7 +17,7 @@ public class LoggingInterceptor implements HandlerInterceptor
     {
         try
         {
-            LogManager.getLogManager().readConfiguration(LoggingInterceptor.class.getResourceAsStream("/logging.properties"));
+            LogManager.getLogManager().readConfiguration(LoggingInterceptor.class.getResourceAsStream("/orion-spring-http-request-logger.properties"));
             log = Logger.getLogger(LoggingInterceptor.class.getName());
         }
         catch(IOException e)
