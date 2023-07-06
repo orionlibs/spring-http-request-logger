@@ -1,1 +1,2 @@
 orionlibs.spring_http_request_logger.interceptor.enabled=true
+log.ip.address.enabled=true

@@ -41,6 +41,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer
         this.featureConfiguration = new OrionConfiguration();
         loadLoggerConfiguration();
         loadFeatureConfiguration();
+        ConfigurationService.registerConfiguration(featureConfiguration);
         //System.out.println("1-------com.github.orionlibs.spring_http_request_logger.level=" + LogManager.getLogManager().getProperty("com.github.orionlibs.spring_http_request_logger.level"));
         //System.out.println("2-------com.github.orionlibs.spring_http_request_logger.level=" + env.getProperty("com.github.orionlibs.spring_http_request_logger.level"));
     }
