@@ -60,7 +60,7 @@ public class LoggingInterceptorTest
 
 
     @Test
-    void preHandle() throws Exception
+    void test_preHandle() throws Exception
     {
         mockMvc.perform(get("/")).andExpect(status().isOk());
         boolean messageLogged = listLogHandler.getLogRecords().stream()
