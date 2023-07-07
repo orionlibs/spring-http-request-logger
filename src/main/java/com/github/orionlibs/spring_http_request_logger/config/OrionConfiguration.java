@@ -1,5 +1,6 @@
 package com.github.orionlibs.spring_http_request_logger.config;
 
+import com.github.orionlibs.spring_http_request_logger.LoggingInterceptor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +16,48 @@ import org.springframework.core.env.Environment;
  */
 public class OrionConfiguration extends Properties
 {
+    /**
+     * The location of the configuration file that has the logging configuration only e.g. log levels.
+     */
+    public static final String LOGGER_CONFIGURATION_FILE = "/com/github/orionlibs/spring_http_request_logger/configuration/orion-spring-http-request-logger.prop";
+    /**
+     * The location of the configuration file that has configuration for the features of this plugin.
+     */
+    public static final String FEATURE_CONFIGURATION_FILE = "/com/github/orionlibs/spring_http_request_logger/configuration/feature-configuration.prop";
+
+
+    public static OrionConfiguration loadLoggerConfigurationAndGet(Environment springEnv) throws IOException
+    {
+        OrionConfiguration loggerConfiguration = new OrionConfiguration();
+        InputStream defaultConfigStream = LoggingInterceptor.class.getResourceAsStream(LOGGER_CONFIGURATION_FILE);
+        try
+        {
+            loggerConfiguration.loadDefaultAndCustomConfiguration(defaultConfigStream, springEnv);
+            return loggerConfiguration;
+        }
+        catch(IOException e)
+        {
+            throw new IOException("Could not setup logger configuration for the Orion Spring HTTP Request Logger Plugin: ", e);
+        }
+    }
+
+
+    public static OrionConfiguration loadFeatureConfiguration(Environment springEnv) throws IOException
+    {
+        OrionConfiguration featureConfiguration = new OrionConfiguration();
+        InputStream defaultConfigStream = LoggingInterceptor.class.getResourceAsStream(FEATURE_CONFIGURATION_FILE);
+        try
+        {
+            featureConfiguration.loadDefaultAndCustomConfiguration(defaultConfigStream, springEnv);
+            return featureConfiguration;
+        }
+        catch(IOException e)
+        {
+            throw new IOException("Could not setup feature configuration for the Orion Spring HTTP Request Logger Plugin: ", e);
+        }
+    }
+
+
     /**
      * It takes default configuration and custom configuration from the Spring environment.
      * For each default configuration property, it registers that one if there is no custom
@@ -54,6 +97,11 @@ public class OrionConfiguration extends Properties
     }
 
 
+    /**
+     * remaps the given key to the given value
+     * @param key
+     * @param value
+     */
     public void updateProp(String key, String value)
     {
         put(key, value);
