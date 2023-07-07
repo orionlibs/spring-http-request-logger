@@ -162,4 +162,26 @@ public class LoggingInterceptorTest
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.methods.logged", "*");
     }
+
+
+    @Test
+    void test_preHandle_specificURIPatterns() throws Exception
+    {
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uris.logged.pattern", "^(/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uris.logged.pattern", "^(/api/v1/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
+        mockMvc.perform(get("/api/v1/users")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /api/v1/users")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uris.logged.pattern", ".*/users/.*");
+        mockMvc.perform(get("/api/v1/users")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /api/v1/users")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uris.logged.pattern", "*");
+    }
 }

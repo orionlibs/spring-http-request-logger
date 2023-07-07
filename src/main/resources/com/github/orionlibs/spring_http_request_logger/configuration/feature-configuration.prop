@@ -4,3 +4,7 @@ orionlibs.spring_http_request_logger.log.http.method.enabled=true
 orionlibs.spring_http_request_logger.log.uri.enabled=true
 orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element=%s: %s
 orionlibs.spring_http_request_logger.log.http.methods.logged=*
+orionlibs.spring_http_request_logger.log.uris.logged.pattern=*
+#orionlibs.spring_http_request_logger.log.uris.logged.pattern=^(/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$ any valid URI
+#orionlibs.spring_http_request_logger.log.uris.logged.pattern=^(/api/v1/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$ any valid URI that starts with /api/v1/
+#orionlibs.spring_http_request_logger.log.uris.logged.pattern=.*/users/.* any valid URI that contains /users/
