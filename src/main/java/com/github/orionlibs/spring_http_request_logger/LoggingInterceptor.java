@@ -97,6 +97,11 @@ public class LoggingInterceptor implements HandlerInterceptor
         {
             log.info(String.join(", ", logElements.toArray(new String[0])));
         }
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.request.processing.duration.enabled"))
+        {
+            long startTime = System.nanoTime();
+            request.setAttribute("orionlibs.spring_http_request_logger", startTime);
+        }
         return true;
     }
 
@@ -124,6 +129,13 @@ public class LoggingInterceptor implements HandlerInterceptor
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                     @Nullable ModelAndView modelAndView) throws Exception
     {
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.request.processing.duration.enabled"))
+        {
+            long startTime = (Long)request.getAttribute("orionlibs.spring_http_request_logger");
+            long endTime = System.nanoTime();
+            long executeTime = endTime - startTime;
+            log.info("Handler: " + handler + " took " + executeTime + "ns");
+        }
     }
 
 

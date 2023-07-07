@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 /**
  * Properties-based class that holds configuration.
  */
-class OrionConfiguration extends Properties
+public class OrionConfiguration extends Properties
 {
     /**
      * It takes default configuration and custom configuration from the Spring environment.
@@ -23,7 +23,7 @@ class OrionConfiguration extends Properties
      * @param springEnv
      * @throws IOException if an error occurred when reading from the input stream
      */
-    void loadDefaultAndCustomConfiguration(InputStream defaultConfiguration, Environment springEnv) throws IOException
+    public void loadDefaultAndCustomConfiguration(InputStream defaultConfiguration, Environment springEnv) throws IOException
     {
         Properties tempProperties = new Properties();
         tempProperties.load(defaultConfiguration);
@@ -46,7 +46,7 @@ class OrionConfiguration extends Properties
      * @return an InputStream of the configuration this object holds
      * @throws IOException if writing this property list to the specified output stream throws an IOException
      */
-    InputStream getAsInputStream() throws IOException
+    public InputStream getAsInputStream() throws IOException
     {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         store(output, null);
