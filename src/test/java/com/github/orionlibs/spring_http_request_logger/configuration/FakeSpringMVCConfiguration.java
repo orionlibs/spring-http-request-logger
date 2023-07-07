@@ -1,4 +1,4 @@
-package com.github.orionlibs.spring_http_request_logger.config;
+package com.github.orionlibs.spring_http_request_logger.configuration;
 
 import com.github.orionlibs.spring_http_request_logger.LoggingInterceptor;
 import org.springframework.context.annotation.Bean;

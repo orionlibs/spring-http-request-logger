@@ -1,4 +1,4 @@
-package com.github.orionlibs.spring_http_request_logger.spring;
+package com.github.orionlibs.spring_http_request_logger.utils;
 
 import java.util.HashMap;
 import java.util.Map;

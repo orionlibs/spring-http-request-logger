@@ -1,4 +1,4 @@
-package com.github.orionlibs.spring_http_request_logger;
+package com.github.orionlibs.spring_http_request_logger.config;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

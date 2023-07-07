@@ -1,10 +1,10 @@
-package com.github.orionlibs.spring_http_request_logger;
+package com.github.orionlibs.spring_http_request_logger.config;
 
-import static com.github.orionlibs.spring_http_request_logger.WebMvcConfiguration.LOGGER_CONFIGURATION_FILE;
+import static com.github.orionlibs.spring_http_request_logger.config.WebMvcConfiguration.LOGGER_CONFIGURATION_FILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.orionlibs.spring_http_request_logger.config.FakeTestingSpringConfiguration;
-import com.github.orionlibs.spring_http_request_logger.spring.FakeSpringEnvironment;
+import com.github.orionlibs.spring_http_request_logger.configuration.FakeTestingSpringConfiguration;
+import com.github.orionlibs.spring_http_request_logger.utils.FakeSpringEnvironment;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;

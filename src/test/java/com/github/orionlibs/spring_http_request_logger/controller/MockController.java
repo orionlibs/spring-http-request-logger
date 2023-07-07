@@ -1,4 +1,4 @@
-package com.github.orionlibs.spring_http_request_logger.config;
+package com.github.orionlibs.spring_http_request_logger.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

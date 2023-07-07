@@ -5,10 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.github.orionlibs.spring_http_request_logger.config.Callback;
-import com.github.orionlibs.spring_http_request_logger.config.FakeTestingSpringConfiguration;
-import com.github.orionlibs.spring_http_request_logger.config.ListLogHandler;
-import com.github.orionlibs.spring_http_request_logger.config.MockController;
+import com.github.orionlibs.spring_http_request_logger.utils.Callback;
+import com.github.orionlibs.spring_http_request_logger.config.ConfigurationService;
+import com.github.orionlibs.spring_http_request_logger.configuration.FakeTestingSpringConfiguration;
+import com.github.orionlibs.spring_http_request_logger.log.ListLogHandler;
+import com.github.orionlibs.spring_http_request_logger.controller.MockController;
 import java.io.IOException;
 import java.util.logging.LogManager;
 import org.junit.jupiter.api.AfterEach;
