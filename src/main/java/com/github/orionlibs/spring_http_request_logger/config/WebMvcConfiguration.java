@@ -1,5 +1,6 @@
-package com.github.orionlibs.spring_http_request_logger;
+package com.github.orionlibs.spring_http_request_logger.config;
 
+import com.github.orionlibs.spring_http_request_logger.LoggingInterceptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.LogManager;
