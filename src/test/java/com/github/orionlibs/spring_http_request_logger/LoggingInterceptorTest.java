@@ -189,8 +189,10 @@ public class LoggingInterceptorTest
     @Test
     void test_preHandle_queryParameters() throws Exception
     {
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.query.params.enabled", "true");
         mockMvc.perform(get("/search?query=hello+there&options=45")).andExpect(status().isOk());
         assertTrue(listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /search?query=hello+there&options=45")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.query.params.enabled", "false");
     }
 }

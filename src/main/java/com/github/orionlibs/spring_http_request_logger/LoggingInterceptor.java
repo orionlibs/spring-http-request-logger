@@ -72,7 +72,10 @@ public class LoggingInterceptor implements HandlerInterceptor
                 }
             }
         }
-        queryParametersLog = request.getQueryString();
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.query.params.enabled"))
+        {
+            queryParametersLog = "?" + request.getQueryString();
+        }
         List<String> logElements = new ArrayList<>();
         if(ipAddressLog != null)
         {
@@ -80,22 +83,32 @@ public class LoggingInterceptor implements HandlerInterceptor
         }
         if(httpMethodLog != null && uriLog != null)
         {
-            logElements.add(String.format(logRecordPattern, "URI", httpMethodLog + " " + uriLog + "?" + queryParametersLog));
+            logElements.add(String.format(logRecordPattern, "URI", httpMethodLog + " " + buildCompleteURILog(uriLog, queryParametersLog)));
         }
         else if(httpMethodLog == null && uriLog != null)
         {
-            logElements.add(String.format(logRecordPattern, "URI", uriLog + "?" + queryParametersLog));
+            logElements.add(String.format(logRecordPattern, "URI", buildCompleteURILog(uriLog, queryParametersLog)));
         }
         else if(httpMethodLog != null && uriLog == null)
         {
             logElements.add(String.format(logRecordPattern, "URI", httpMethodLog));
         }
-
         if(!logElements.isEmpty())
         {
             log.info(String.join(", ", logElements.toArray(new String[0])));
         }
         return true;
+    }
+
+
+    private String buildCompleteURILog(String uriLog, String queryParametersLog)
+    {
+        String completeURILog = uriLog;
+        if(queryParametersLog != null)
+        {
+            completeURILog += queryParametersLog;
+        }
+        return completeURILog;
     }
 
 
