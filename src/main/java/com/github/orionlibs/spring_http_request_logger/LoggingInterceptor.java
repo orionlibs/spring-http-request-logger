@@ -39,6 +39,7 @@ public class LoggingInterceptor implements HandlerInterceptor
         String ipAddressLog = null;
         String httpMethodLog = null;
         String uriLog = null;
+        String queryParametersLog = null;
         String logRecordPattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
         if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.ip.address.enabled"))
         {
@@ -71,6 +72,10 @@ public class LoggingInterceptor implements HandlerInterceptor
                 }
             }
         }
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.query.params.enabled"))
+        {
+            queryParametersLog = "?" + request.getQueryString();
+        }
         List<String> logElements = new ArrayList<>();
         if(ipAddressLog != null)
         {
@@ -78,11 +83,11 @@ public class LoggingInterceptor implements HandlerInterceptor
         }
         if(httpMethodLog != null && uriLog != null)
         {
-            logElements.add(String.format(logRecordPattern, "URI", httpMethodLog + " " + uriLog));
+            logElements.add(String.format(logRecordPattern, "URI", httpMethodLog + " " + buildCompleteURILog(uriLog, queryParametersLog)));
         }
         else if(httpMethodLog == null && uriLog != null)
         {
-            logElements.add(String.format(logRecordPattern, "URI", uriLog));
+            logElements.add(String.format(logRecordPattern, "URI", buildCompleteURILog(uriLog, queryParametersLog)));
         }
         else if(httpMethodLog != null && uriLog == null)
         {
@@ -93,6 +98,17 @@ public class LoggingInterceptor implements HandlerInterceptor
             log.info(String.join(", ", logElements.toArray(new String[0])));
         }
         return true;
+    }
+
+
+    private String buildCompleteURILog(String uriLog, String queryParametersLog)
+    {
+        String completeURILog = uriLog;
+        if(queryParametersLog != null)
+        {
+            completeURILog += queryParametersLog;
+        }
+        return completeURILog;
     }
 
 
