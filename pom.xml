@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.orionlibs</groupId>
     <artifactId>spring-http-request-logger</artifactId>
-    <version>0.0.1</version>
+    <version>0.13.10</version>
     <name>Spring HTTP Request Logger</name>
     <description>A Spring plugin that implements an MVC interceptor that logs all HTTP requests</description>
     <url>https://github.com/orionlibs/spring-http-request-logger</url>
