@@ -65,9 +65,8 @@ public class LoggingInterceptorTest
     void test_preHandle_interceptorEnabled() throws Exception
     {
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /"));
-        assertTrue(messageLogged);
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
     }
 
 
@@ -78,9 +77,8 @@ public class LoggingInterceptorTest
                         .standaloneSetup(new MockController())
                         .build();
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /"));
-        assertFalse(messageLogged);
+        assertFalse(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
     }
 
 
@@ -89,9 +87,8 @@ public class LoggingInterceptorTest
     {
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("URI: GET /"));
-        assertTrue(messageLogged);
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("URI: GET /")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "true");
     }
 
@@ -101,9 +98,8 @@ public class LoggingInterceptorTest
     {
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: /"));
-        assertTrue(messageLogged);
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: /")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "true");
     }
 
@@ -113,9 +109,8 @@ public class LoggingInterceptorTest
     {
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET"));
-        assertTrue(messageLogged);
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "true");
     }
 
@@ -126,9 +121,8 @@ public class LoggingInterceptorTest
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "false");
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("URI: GET"));
-        assertTrue(messageLogged);
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("URI: GET")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "true");
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uri.enabled", "true");
     }
@@ -140,10 +134,32 @@ public class LoggingInterceptorTest
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "false");
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "false");
         mockMvc.perform(get("/")).andExpect(status().isOk());
-        boolean messageLogged = listLogHandler.getLogRecords().stream()
-                        .anyMatch(record -> record.getMessage().contains("URI: /"));
-        assertTrue(messageLogged);
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("URI: /")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.ip.address.enabled", "true");
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.method.enabled", "true");
+    }
+
+
+    @Test
+    void test_preHandle_specificHTTPMethods() throws Exception
+    {
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.methods.logged", "GET");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.methods.logged", "GET,POST");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.methods.logged", "POST");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.methods.logged", "POST,PUT");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1")));
+        ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.http.methods.logged", "*");
     }
 }

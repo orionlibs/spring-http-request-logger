@@ -1,7 +1,7 @@
 package com.github.orionlibs.spring_http_request_logger;
 
 import java.util.ArrayList;
-import java.util.Formatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -34,37 +34,45 @@ public class LoggingInterceptor implements HandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     {
-        List<String> logElements = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
+        String ipAddressLog = null;
+        String httpMethodLog = null;
+        String uriLog = null;
+        String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
         if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.ip.address.enabled"))
         {
-            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
-            String result = String.format(pattern, "IP", request.getRemoteAddr());
-            logElements.add(result);
+            ipAddressLog = String.format(pattern, "IP", request.getRemoteAddr());
         }
-        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
-                        && ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled"))
         {
-            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
-            String result = String.format(pattern, "URI", request.getMethod() + " " + request.getRequestURI());
-            logElements.add(result);
+            String httpMethodsToLogPattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.http.methods.logged");
+            String[] httpMethodsToLog = httpMethodsToLogPattern.split(",");
+            if("*".equals(httpMethodsToLogPattern)
+                            || Arrays.stream(httpMethodsToLog).anyMatch(m -> m.equalsIgnoreCase(request.getMethod())))
+            {
+                httpMethodLog = String.format(pattern, "URI", request.getMethod() + " " + request.getRequestURI());
+            }
         }
-        else if(!ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
-                        && ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
+        if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
         {
-            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
-            String result = String.format(pattern, "URI", request.getRequestURI());
-            logElements.add(result);
+            uriLog = String.format(pattern, "URI", request.getRequestURI());
         }
-        else if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.http.method.enabled")
-                        && !ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.uri.enabled"))
+        List<String> logElements = new ArrayList<>();
+        if(ipAddressLog != null)
         {
-            String pattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
-            String result = String.format(pattern, "URI", request.getMethod());
-            logElements.add(result);
-            Formatter temp;
+            logElements.add(ipAddressLog);
         }
-        log.info(String.join(", ", logElements.toArray(new String[0])));
+        if(httpMethodLog != null)
+        {
+            logElements.add(httpMethodLog);
+        }
+        if(uriLog != null)
+        {
+            logElements.add(uriLog);
+        }
+        if(!logElements.isEmpty())
+        {
+            log.info(String.join(", ", logElements.toArray(new String[0])));
+        }
         return true;
     }
 
