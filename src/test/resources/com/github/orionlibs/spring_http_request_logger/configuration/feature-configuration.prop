@@ -9,3 +9,4 @@ orionlibs.spring_http_request_logger.log.uris.logged.pattern=*
 #orionlibs.spring_http_request_logger.log.uris.logged.pattern=^(/api/v1/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$ any valid URI that starts with /api/v1/
 #orionlibs.spring_http_request_logger.log.uris.logged.pattern=.*/users/.* any valid URI that contains /users/
 orionlibs.spring_http_request_logger.log.uri.query.params.enabled=false
+orionlibs.spring_http_request_logger.log.request.processing.duration.enabled=true

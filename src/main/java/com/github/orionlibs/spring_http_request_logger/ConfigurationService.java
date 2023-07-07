@@ -5,7 +5,7 @@ public class ConfigurationService
     private static OrionConfiguration configurationRegistry;
 
 
-    static void registerConfiguration(OrionConfiguration configuration)
+    public static void registerConfiguration(OrionConfiguration configuration)
     {
         configurationRegistry = configuration;
     }
