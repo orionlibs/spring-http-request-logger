@@ -184,4 +184,13 @@ public class LoggingInterceptorTest
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /api/v1/users")));
         ConfigurationService.updateProp("orionlibs.spring_http_request_logger.log.uris.logged.pattern", "*");
     }
+
+
+    @Test
+    void test_preHandle_queryParameters() throws Exception
+    {
+        mockMvc.perform(get("/search?query=hello+there&options=45")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /search?query=hello+there&options=45")));
+    }
 }

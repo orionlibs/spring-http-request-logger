@@ -39,6 +39,7 @@ public class LoggingInterceptor implements HandlerInterceptor
         String ipAddressLog = null;
         String httpMethodLog = null;
         String uriLog = null;
+        String queryParametersLog = null;
         String logRecordPattern = ConfigurationService.getProp("orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element");
         if(ConfigurationService.getBooleanProp("orionlibs.spring_http_request_logger.log.ip.address.enabled"))
         {
@@ -71,6 +72,7 @@ public class LoggingInterceptor implements HandlerInterceptor
                 }
             }
         }
+        queryParametersLog = request.getQueryString();
         List<String> logElements = new ArrayList<>();
         if(ipAddressLog != null)
         {
@@ -78,16 +80,17 @@ public class LoggingInterceptor implements HandlerInterceptor
         }
         if(httpMethodLog != null && uriLog != null)
         {
-            logElements.add(String.format(logRecordPattern, "URI", httpMethodLog + " " + uriLog));
+            logElements.add(String.format(logRecordPattern, "URI", httpMethodLog + " " + uriLog + "?" + queryParametersLog));
         }
         else if(httpMethodLog == null && uriLog != null)
         {
-            logElements.add(String.format(logRecordPattern, "URI", uriLog));
+            logElements.add(String.format(logRecordPattern, "URI", uriLog + "?" + queryParametersLog));
         }
         else if(httpMethodLog != null && uriLog == null)
         {
             logElements.add(String.format(logRecordPattern, "URI", httpMethodLog));
         }
+
         if(!logElements.isEmpty())
         {
             log.info(String.join(", ", logElements.toArray(new String[0])));
