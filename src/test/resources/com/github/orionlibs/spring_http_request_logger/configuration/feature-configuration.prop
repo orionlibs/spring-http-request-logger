@@ -3,3 +3,4 @@ orionlibs.spring_http_request_logger.log.ip.address.enabled=true
 orionlibs.spring_http_request_logger.log.http.method.enabled=true
 orionlibs.spring_http_request_logger.log.uri.enabled=true
 orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element=%s: %s
+orionlibs.spring_http_request_logger.log.http.methods.logged=*
