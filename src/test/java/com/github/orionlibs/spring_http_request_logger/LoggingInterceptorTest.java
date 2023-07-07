@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.github.orionlibs.spring_http_request_logger.utils.Callback;
 import com.github.orionlibs.spring_http_request_logger.config.ConfigurationService;
 import com.github.orionlibs.spring_http_request_logger.configuration.FakeTestingSpringConfiguration;
-import com.github.orionlibs.spring_http_request_logger.log.ListLogHandler;
 import com.github.orionlibs.spring_http_request_logger.controller.MockController;
+import com.github.orionlibs.spring_http_request_logger.log.ListLogHandler;
+import com.github.orionlibs.spring_http_request_logger.utils.Callback;
 import java.io.IOException;
 import java.util.logging.LogManager;
 import org.junit.jupiter.api.AfterEach;
@@ -43,7 +43,7 @@ public class LoggingInterceptorTest
         {
             listLogHandler = new ListLogHandler();
             LogManager.getLogManager().readConfiguration(LoggingInterceptorTest.class.getResourceAsStream("/com/github/orionlibs/spring_http_request_logger/configuration/orion-spring-http-request-logger.prop"));
-            LoggingInterceptor.log.addHandler(listLogHandler);
+            LoggingInterceptor.addLogHandler(listLogHandler);
             mockMvc = MockMvcBuilders
                             .standaloneSetup(new MockController())
                             .addInterceptors(new LoggingInterceptor())
@@ -59,7 +59,7 @@ public class LoggingInterceptorTest
     @AfterEach
     public void teardown()
     {
-        LoggingInterceptor.log.removeHandler(listLogHandler);
+        LoggingInterceptor.removeLogHandler(listLogHandler);
     }
 
 

@@ -1,6 +1,6 @@
 package com.github.orionlibs.spring_http_request_logger.config;
 
-import static com.github.orionlibs.spring_http_request_logger.config.WebMvcConfiguration.LOGGER_CONFIGURATION_FILE;
+import static com.github.orionlibs.spring_http_request_logger.config.OrionConfiguration.LOGGER_CONFIGURATION_FILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.orionlibs.spring_http_request_logger.configuration.FakeTestingSpringConfiguration;
