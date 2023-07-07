@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.github.orionlibs.spring_http_request_logger.config.Callback;
 import com.github.orionlibs.spring_http_request_logger.config.FakeTestingSpringConfiguration;
 import com.github.orionlibs.spring_http_request_logger.config.ListLogHandler;
 import com.github.orionlibs.spring_http_request_logger.config.MockController;
@@ -203,5 +204,21 @@ public class LoggingInterceptorTest
         mockMvc.perform(get("/")).andExpect(status().isOk());
         assertTrue(listLogHandler.getLogRecords().stream()
                         .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
+    }
+
+
+    @Test
+    void test_postHandle_callback() throws Exception
+    {
+        mockMvc = MockMvcBuilders
+                        .standaloneSetup(new MockController())
+                        .addInterceptors(new LoggingInterceptor(new Callback()))
+                        .build();
+        Callback.log.addHandler(listLogHandler);
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("IP: 127.0.0.1, URI: GET /")));
+        assertTrue(listLogHandler.getLogRecords().stream()
+                        .anyMatch(record -> record.getMessage().contains("callback has been called")));
     }
 }

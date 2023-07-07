@@ -20,11 +20,18 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoggingInterceptor implements HandlerInterceptor
 {
     public static Logger log;
+    private Runnable callback;
 
     static
     {
         log = Logger.getLogger(LoggingInterceptor.class.getName());
     }
+
+    public LoggingInterceptor(Runnable callback)
+    {
+        this.callback = callback;
+    }
+
 
     /**
      * It logs this HTTP request's data before it is handled.
@@ -101,6 +108,10 @@ public class LoggingInterceptor implements HandlerInterceptor
         {
             long startTime = System.nanoTime();
             request.setAttribute("orionlibs.spring_http_request_logger", startTime);
+        }
+        if(callback != null)
+        {
+            callback.run();
         }
         return true;
     }
