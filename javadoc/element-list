@@ -1,0 +1,6 @@
+com.github.orionlibs.spring_http_request_logger
+com.github.orionlibs.spring_http_request_logger.config
+com.github.orionlibs.spring_http_request_logger.configuration
+com.github.orionlibs.spring_http_request_logger.controller
+com.github.orionlibs.spring_http_request_logger.log
+com.github.orionlibs.spring_http_request_logger.utils
