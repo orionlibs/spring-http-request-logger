@@ -104,30 +104,58 @@
     <section class="content">
         <div class="content__inner">
             <header class="content__title">
-                <h1>Home</h1>
+                <h1>Configuration</h1>
             </header>
 
 
             <div class="central-section">
                 <div class="row">
                     <div class="full_row">
-                        <header class="content__title">
+                        <!--<header class="content__title">
                             <h1>Overview</h1>
-                        </header>
+                        </header>-->
                         
                         
                         <div class="card results">
                             <div class="results__header">
                                 <div class="results__search">
-                                    Welcome to the spring-http-request-logger wiki!<br>
-                                    This is a small plugin to be used in Spring-based applications.<br>
-                                    Its purpose is to provide a Spring MVC interceptor that logs incoming HTTP requests. The logs look like:<br>
-                                    IP: 127.0.0.1, URI: GET /api/v1/orders/2385739<br>
-                                    This plugin is compiled with JDK17 and it uses Spring 5.3.28
-                                    <br><br>
-                                    <a id="open_usage_page_button" class=" btn btn-outline-primary" href="https://orionlibs.github.io/spring-http-request-logger/how-to-use.html" style="width: 10%">How to Use</a>
-                                    <br><br>
-                                    <a id="open_configuration_page_button" class=" btn btn-outline-primary" href="https://orionlibs.github.io/spring-http-request-logger/configuration.html" style="width: 10%">Configuration</a>
+                                    If you want to configure the registration of the MVC interceptor i.e. enable/disable it, then, in your Spring configuration files like application.properties for Spring Boot or other files you import with ways like:<br>
+                                    <pre>
+                                        @PropertySource(value = {"classpath:configuration/MVCConfiguration.prop"})
+                                    </pre>
+                                    then, if you want to enable this plugin then the configuration is:
+                                    <pre>
+                                        orionlibs.spring_http_request_logger.interceptor.enabled=true
+                                    </pre>
+                                    The configuration for the logger is as follows:<br>
+                                    <pre>
+                                        orionlibs.spring_http_request_logger.log.ip.address.enabled=true
+                                        orionlibs.spring_http_request_logger.log.http.method.enabled=true
+                                        orionlibs.spring_http_request_logger.log.uri.enabled=true
+                                        orionlibs.spring_http_request_logger.log.pattern.for.each.log.record.element=%s: %s
+                                    </pre>
+                                    The pattern %s: %s makes the log look like:<br>
+                                    Jul 07, 2023 10:57:44 AM com.github.orionlibs.spring_http_request_logger.LoggingInterceptor preHandle INFO: IP: 127.0.0.1, URI: GET /api/v1/users/1234<br>
+                                    <pre>
+                                        orionlibs.spring_http_request_logger.log.http.methods.logged=* OR orionlibs.spring_http_request_logger.log.http.methods.logged=GET,POST,PUT,DELETE,etc.
+                                    </pre>
+                                    <pre>
+                                        orionlibs.spring_http_request_logger.log.uris.logged.pattern=* (accepts all URIs) OR ^(/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$ (accepts all valid URIs)
+                                        OR
+                                        orionlibs.spring_http_request_logger.log.uris.logged.pattern=^(/api/v1/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*)$ (accepts all valid URIs that starts with /api/v1/)
+                                        OR
+                                        orionlibs.spring_http_request_logger.log.uris.logged.pattern= OR .*/users/.* (accepts all valid URIs  that contains /users/)
+                                    </pre>
+                                    <pre>
+                                        orionlibs.spring_http_request_logger.log.uri.query.params.enabled=false
+                                    </pre>
+                                    the above configuration is false by default, but if you make it true then if the HTTP request URI had request parameters then the log will look like:<br>
+                                    INFO: IP: 127.0.0.1, URI: GET /api/v1/search?query=some+query&options=4<br>
+                                    <pre>
+                                        orionlibs.spring_http_request_logger.log.request.processing.duration.enabled=false
+                                    </pre>
+                                    the above configuration is false by default, but if you make it true then there will be a log that looks like:<br>
+                                    INFO: Handler: com.github.orionlibs.spring_http_request_logger.config.MockController#getHome(HttpServletRequest, HttpServletResponse, Model) took 16563800ns
                                 </div>
                             </div>
                         </div>
