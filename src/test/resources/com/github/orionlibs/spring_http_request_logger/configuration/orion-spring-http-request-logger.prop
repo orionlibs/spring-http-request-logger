@@ -1,6 +1,0 @@
-handlers=java.util.logging.ConsoleHandler
-java.util.logging.ConsoleHandler.level=INFO
-java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
-
-com.github.orionlibs.spring_http_request_logger.level=INFO
-#org.springframework.level=OFF
