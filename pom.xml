@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.version>5.3.28</spring.version>
+        <spring.version>6.0.10</spring.version>
     </properties>
 
 
@@ -150,10 +150,6 @@
                 <configuration>
                     <keyname>0xA4B2559E</keyname>
                     <passphraseServerId>ossrh</passphraseServerId>
-                    <!--<gpgArguments>
-                        <arg>pinentry-mode</arg>
-                        <arg>loopback</arg>
-                    </gpgArguments>-->
                 </configuration>
             </plugin>
 
@@ -170,7 +166,20 @@
                     <goals>deploy nexus-staging:release</goals>
                 </configuration>
             </plugin>
-
+            
+            
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>8.3.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
 
@@ -222,25 +231,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>8.0.1</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-        </dependency>
-
-
-        <!--<dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+            <version>6.0.0</version>
+        </dependency>
 
 
 
@@ -252,16 +246,9 @@
 
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.15.2</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
 
 
@@ -289,13 +276,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite-engine</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.googlecode.junit-toolbox</groupId>
-            <artifactId>junit-toolbox</artifactId>
-            <version>2.4</version>
         </dependency>
 
 
