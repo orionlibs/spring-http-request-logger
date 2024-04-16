@@ -4,7 +4,7 @@
     <artifactId>spring-http-request-logger</artifactId>
     <version>1.0.2</version>
     <name>Spring HTTP Request Logger</name>
-    <description>A Spring plugin that implements an MVC interceptor that logs all HTTP requests</description>
+    <description>A Spring plugin that implements an MVC interceptor that logs all HTTP requests.</description>
     <url>https://github.com/orionlibs/spring-http-request-logger</url>
 
 
